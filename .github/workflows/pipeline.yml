@@ -42,9 +42,12 @@ jobs:
     if: ${{github.event_name == 'push' }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: full-stack-open-pokedex
     steps:
-    - name: Bump version and push tag
-      uses: anothrNick/github-tag-action@1.67.0
-      env:
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
