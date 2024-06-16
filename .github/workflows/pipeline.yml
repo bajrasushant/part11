@@ -46,6 +46,7 @@ jobs:
       run:
         working-directory: full-stack-open-pokedex
     steps:
+      - uses: actions/checkout@v4
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.67.0
         env:
