@@ -15,6 +15,13 @@ app.get("/health", (req, res) => {
   // if (true) throw "error...";
   res.send("ok");
 });
+/*eslint-disable */
+
+// Introduce intentional error
+console.log("Err);
+
+/*eslint-enable */
+
 
 app.listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
