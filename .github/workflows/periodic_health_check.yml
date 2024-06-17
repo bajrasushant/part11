@@ -22,5 +22,3 @@ jobs:
         with:
           url: http://pokedex-fso-631m.onrender.com/health
           follow-redirect: false
-          max-attempts: 2
-          retry-delay: 10s
