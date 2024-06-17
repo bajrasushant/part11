@@ -21,10 +21,23 @@ jobs:
           node-version: "20"
       - name: Install dependencies
         run: npm install
+
       - name: Check style
         run: npm run eslint
-      - name: build
+
+      - name: Build
         run: npm run build
+
+      - name: Test
+        run: npm run test
+
+      - name: e2e tests
+        uses: cypress-io/github-action@v6
+        with:
+          command: npm run test:e2e
+          start: npm run start-prod
+          wait-on: http://localhost:5000
+          working-directory: full-stack-open-pokedex
 
       - name: Build fail notify discord
         if: failure()
@@ -35,15 +48,6 @@ jobs:
           description: "commit \n https://github.com/${{github.repository}}/commit/${{ github.sha }} by ${{github.actor}} broke the build :("
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
-      - name: test
-        run: npm run test
-      - name: e2e tests
-        uses: cypress-io/github-action@v6
-        with:
-          command: npm run test:e2e
-          start: npm run start-prod
-          wait-on: http://localhost:5000
-          working-directory: full-stack-open-pokedex
       - name: Trigger deployment
         if: ${{github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
