@@ -25,6 +25,16 @@ jobs:
         run: npm run eslint
       - name: build
         run: npm run build
+
+      - name: Build fail notify discord
+        if: failure()
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: error
+          text: Build failed
+          description: "commit \n https://github.com/${{github.repository}}/commit/${{ github.sha }} by ${{github.actor}} broke the build :("
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
       - name: test
         run: npm run test
       - name: e2e tests
@@ -37,6 +47,17 @@ jobs:
       - name: Trigger deployment
         if: ${{github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
+        if: ${{ success()}}
+
+      - name: Deploy success notify discord
+        if: success()
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          text: A new version is deployed
+          description: "to https://pokedex-fso-631m.onrender.com/ by ${{ github.actor}}"
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
 
   tag_release:
     if: ${{github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
