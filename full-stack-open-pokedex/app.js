@@ -18,7 +18,7 @@ app.get("/health", (req, res) => {
 /*eslint-disable */
 
 // Introduce intentional error
-console.log("Err);
+console.log("Err
 
 /*eslint-enable */
 
