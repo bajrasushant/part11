@@ -49,7 +49,7 @@ jobs:
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
 
       - name: Deploy success notify discord
-        if: success()
+        if: ${{ github.event_name == 'push' && success() && !contains(join(github.event.commits.*.message), '#skip') }}
         uses: rjstone/discord-webhook-notify@v1
         with:
           severity: info
