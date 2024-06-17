@@ -16,11 +16,6 @@ app.get("/health", (req, res) => {
   res.send("ok");
 });
 
-// Introduce intentional error
-console.log("Err
-
-
-
 app.listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
 });
